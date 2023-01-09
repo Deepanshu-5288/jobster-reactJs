@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import {FaAlignLeft, FaUserCircle, FaCaretDown} from "react-icons/fa"
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
-import { logoutUser, toggleSidebar } from '../features/user/userSlice';
+import {  clearStore, toggleSidebar } from '../features/user/userSlice';
 import Logo from "./Logo";
 
 function Navbar() {
@@ -14,7 +14,7 @@ function Navbar() {
     dispatch(toggleSidebar());
   }
   const logout =() =>{
-    dispatch(logoutUser());
+    dispatch(clearStore);
   }
 
   return (

@@ -13,6 +13,7 @@ const initialFilterState = {
 const initialState = {
     jobs:[],
     isLoading:false,
+    page:1,
     totalJobs:0,
     numOfPages:1,
     stats:{},
@@ -21,8 +22,15 @@ const initialState = {
 }
 
 export const getAllJobs = createAsyncThunk('allJobs/getJobs', async(_, thunkAPI) =>{
+    const { page, search, searchStatus, searchType, sort } =
+      thunkAPI.getState().allJobs;
+
+    let url = `/jobs?status=${searchStatus}&jobType=${searchType}&sort=${sort}&page=${page}`;
+    if (search) {
+      url = url + `&search=${search}`;
+    }
     try {
-        const resp = await customFetch.get(`/jobs`);
+        const resp = await customFetch.get(url);
         return resp.data;
     } catch (error) {
         return thunkAPI.rejectWithValue(error.response.data.msg);
@@ -43,11 +51,16 @@ const allJobsSlice = createSlice({
     initialState,
     reducers:{
         handleStateChange : (state, {payload : {name, value}}) =>{
+            state.page =1;
             state[name] = value;
         },
         clearSearch : (state) =>{
             return {...state, ...initialFilterState};
-        }
+        },
+        changePage:(state, {payload}) =>{
+            state.page = payload;
+        },
+        clearAllJobsState : (state) => initialState
     },
     extraReducers:(builder) =>{
         builder
@@ -57,6 +70,8 @@ const allJobsSlice = createSlice({
         .addCase(getAllJobs.fulfilled, (state, {payload}) =>{
             state.isLoading = false;
             state.jobs = payload.jobs;
+            state.totalJobs = payload.totalJobs;
+            state.numOfPages = payload.numOfPages;
         })
         .addCase(getAllJobs.rejected, (state, {payload}) =>{
             state.isLoading=false;
@@ -77,6 +92,6 @@ const allJobsSlice = createSlice({
     }
 }) 
 
-export const {clearSearch, handleStateChange} = allJobsSlice.actions;
+export const {clearSearch, handleStateChange, changePage, clearAllJobsState} = allJobsSlice.actions;
 
 export default allJobsSlice.reducer;

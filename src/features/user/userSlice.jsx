@@ -2,6 +2,8 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { toast } from "react-toastify";
 import customFetch from "../../utils/axios";
 import { getLocalStorageUser, removeLocalStorageUser, setLocalStorageUser } from "../../utils/localStorage";
+import { clearAllJobsState } from "../alljobs/allJobsSlice";
+import { clearState } from "../Job/jobSlice";
 
 const initialState ={
     isLoading : false,
@@ -40,6 +42,17 @@ export const updateUser = createAsyncThunk('user/updateUser', async(user, thunkA
     }
 })
 
+export const clearStore = createAsyncThunk("/clear/store", async(message, thunkAPI) =>{
+    try {
+        thunkAPI.dispatch(logoutUser(message));
+    thunkAPI.dispatch(clearAllJobsState());
+    thunkAPI.dispatch(clearState());
+    return Promise.resolve();
+    } catch (error) {
+        return Promise.reject();
+    }
+})
+
 const userSlice = createSlice({
     name:'user',
     initialState,
@@ -47,11 +60,11 @@ const userSlice = createSlice({
         toggleSidebar : (state) =>{
             state.isSidebarOpen = !state.isSidebarOpen;
         },
-        logoutUser : (state) =>{
+        logoutUser : (state, {payload}) =>{
             state.user = null;
             state.isSidebarOpen=false;
             removeLocalStorageUser();
-            toast.success("Successfully logged out");
+            toast.success(payload);
         }
     },
     extraReducers:(builder) =>{
@@ -96,6 +109,9 @@ const userSlice = createSlice({
         .addCase(updateUser.rejected, (state, {payload}) =>{
             state.isLoading = false;
             toast.error(payload);
+        })
+        .addCase(clearStore.rejected, () =>{
+            toast.error('There was an error');
         })
     }
 });

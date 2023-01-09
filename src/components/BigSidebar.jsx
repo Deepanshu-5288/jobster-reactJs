@@ -22,6 +22,7 @@ function BigSidebar() {
 
 const Wrapper = styled.aside`
 display: none;
+
 @media (min-width:992px) {
   display: block;
   box-shadow: 1px 0px 0px 0px rgba(0, 0, 0, 0.1);
@@ -33,6 +34,10 @@ display: none;
     margin: -15.625rem;
     transition: var(--transition);
   }
+  .content {
+      position: sticky;
+      top: 0;
+    }
   .show-sidebar{
     margin: 0;
   }
