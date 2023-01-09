@@ -25,7 +25,7 @@ useEffect(() => {
   if (!isEditing) {
     dispatch(handleStateChange({ name: 'jobLocation', value: user.location }));
   }
-}, [isEditing]);
+}, [isEditing, dispatch, user]);
 
   const handleSubmit =(e) =>{
     e.preventDefault();

@@ -8,7 +8,7 @@ function Stats() {
 
   useEffect(() =>{
     dispatch(showStats());
-  },[])
+  },[dispatch])
   if(isLoading){
     return <Loading center />
   }
