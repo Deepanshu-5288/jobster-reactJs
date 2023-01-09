@@ -1,9 +1,15 @@
-import React from 'react'
+import React from 'react';
+import {JobsContainer, SearchContainer} from "../../components";
 
 function AllJobs() {
   return (
-    <div>AllJobs</div>
+    <>
+    <SearchContainer />
+    <JobsContainer />
+    </>
   )
 }
+
+
 
 export default AllJobs

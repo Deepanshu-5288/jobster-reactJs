@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import styled from 'styled-components';
 import {FormRow, FormRowSelect} from "../../components";
-import { handleStateChange, clearState, addJob } from '../../features/Job/jobSlice';
+import { handleStateChange, clearState, addJob, editJob } from '../../features/Job/jobSlice';
 
 function AddJob() {
   const {
@@ -33,6 +33,19 @@ useEffect(() => {
       toast.error('Please Fill Out All Fields');
       return;
     }
+    if(isEditing){
+      dispatch(editJob({
+        jobId:editJobId,
+        job: {
+          position,
+          company,
+          jobLocation,
+          jobType,
+          status,
+        },
+      }));
+      return ;
+    }
     dispatch(addJob({position, company, jobLocation, jobType, status }))
   }
 
@@ -56,7 +69,7 @@ useEffect(() => {
               Clear
             </button>
             <button disabled={isLoading} type='submit' className='btn btn-block submit-btn'>
-              {isLoading ? "Loading..." : "Add Job"}
+              {isLoading ? "Loading..." : isEditing ? "Edit Job" : "Add Job"}
             </button>
           </div>
         </div>
