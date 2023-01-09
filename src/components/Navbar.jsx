@@ -14,7 +14,7 @@ function Navbar() {
     dispatch(toggleSidebar());
   }
   const logout =() =>{
-    dispatch(clearStore);
+    dispatch(clearStore());
   }
 
   return (
