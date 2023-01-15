@@ -20,7 +20,12 @@ const initialState = {
 
 export const addJob = createAsyncThunk("/job/createJob", async (job, thunkAPI) =>{
     try {
-        const resp = await customFetch.post("/jobs", job)
+        const resp = await customFetch.post("/job", job,{
+            headers: {
+              "Content-Type": "application/json"
+              },
+              withCredentials: true
+            })
         thunkAPI.dispatch(clearState());
         return resp.data;
     } catch (error) {
@@ -34,7 +39,12 @@ export const addJob = createAsyncThunk("/job/createJob", async (job, thunkAPI) =
 
 export const editJob = createAsyncThunk("/job/editJob", async({jobId, job}, thunkAPI) =>{
     try {
-        const resp = await customFetch.patch(`/jobs/${jobId}`, job);
+        const resp = await customFetch.patch(`/job/${jobId}`, job,{
+            headers: {
+              "Content-Type": "application/json"
+              },
+              withCredentials: true
+            });
         thunkAPI.dispatch(clearState());
         return resp.data;
     } catch (error) {
@@ -44,7 +54,12 @@ export const editJob = createAsyncThunk("/job/editJob", async({jobId, job}, thun
 
 export const deleteJob = createAsyncThunk("/job/deleteJob", async(id, thunkAPI) =>{
     try {
-        const resp = await customFetch.delete(`/jobs/${id}`);
+        const resp = await customFetch.delete(`/job/${id}`,{
+            headers: {
+              "Content-Type": "application/json"
+              },
+              withCredentials: true
+            });
         thunkAPI.dispatch(getAllJobs());
         return resp.data;
     } catch (error) {

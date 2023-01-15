@@ -13,7 +13,12 @@ const initialState ={
 
 export const registerUser = createAsyncThunk('user/registerUser', async (user, thunkAPI) =>{
     try {
-        const resp = await customFetch.post("/auth/register", user);
+        const resp = await customFetch.post("/auth/register", user,{
+            headers: {
+              "Content-Type": "application/json"
+              },
+              withCredentials: true
+            });
         return resp.data;
     } catch (error) {
         return thunkAPI.rejectWithValue(error.response.data.msg);
@@ -21,7 +26,12 @@ export const registerUser = createAsyncThunk('user/registerUser', async (user, t
 });
 export const loginUser = createAsyncThunk('user/loginUser', async (user, thunkAPI) =>{
     try {
-        const resp = await customFetch.post("/auth/login", user);
+        const resp = await customFetch.post("/auth/login", user, {
+            headers: {
+              "Content-Type": "application/json"
+              },
+              withCredentials: true
+            });
         return resp.data;
     } catch (error) {
         return thunkAPI.rejectWithValue(error.response.data.msg);
@@ -30,7 +40,12 @@ export const loginUser = createAsyncThunk('user/loginUser', async (user, thunkAP
 
 export const updateUser = createAsyncThunk('user/updateUser', async(user, thunkAPI) =>{
     try {
-        const resp = await customFetch.patch('/auth/updateUser', user);
+        const resp = await customFetch.patch('/me/update', user,{
+            headers: {
+              "Content-Type": "application/json"
+              },
+              withCredentials: true
+            });
         
         return resp.data;
     } catch (error) {
