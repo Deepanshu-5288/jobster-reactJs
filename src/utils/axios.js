@@ -9,7 +9,8 @@ customFetch.interceptors.request.use((config) =>{
     config.withCredentials = true;
     const user = getLocalStorageUser();
     if(user){
-        config.headers["Authorization"] = `Bearer ${user.token}`
+        config.headers["Authorization"] = `Bearer ${user.token}`;
+        config.headers["withCredentials "] = true;
     }
     return config;
 },
