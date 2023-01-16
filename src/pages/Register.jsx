@@ -65,7 +65,7 @@ function Register() {
   className='btn btn-block btn-hipster'
   disabled={isLoading}
   onClick={() => {
-    dispatch(loginUser({ email: 'testUser@test.com', password: 'secret' }));
+    dispatch(loginUser({ email: 'testuser@gmail.com', password: 'testuser' }));
   }}
 >
   {isLoading ? 'loading...' : 'demo'}

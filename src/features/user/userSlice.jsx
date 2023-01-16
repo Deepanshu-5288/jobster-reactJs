@@ -13,39 +13,24 @@ const initialState ={
 
 export const registerUser = createAsyncThunk('user/registerUser', async (user, thunkAPI) =>{
     try {
-        const resp = await customFetch.post("/auth/register", user,{
-            headers: {
-              "Content-Type": "application/json"
-              },
-              withCredentials: true
-            });
+        const resp = await customFetch.post("/auth/register", user);
         return resp.data;
     } catch (error) {
-        return thunkAPI.rejectWithValue(error.response.data.msg);
+        return thunkAPI.rejectWithValue(error.response.data.message);
     }
 });
 export const loginUser = createAsyncThunk('user/loginUser', async (user, thunkAPI) =>{
     try {
-        const resp = await customFetch.post("/auth/login", user, {
-            headers: {
-              "Content-Type": "application/json"
-              },
-              withCredentials: true
-            });
+        const resp = await customFetch.post("/auth/login", user);
         return resp.data;
     } catch (error) {
-        return thunkAPI.rejectWithValue(error.response.data.msg);
+        return thunkAPI.rejectWithValue(error.response.data.message);
     }
 });
 
 export const updateUser = createAsyncThunk('user/updateUser', async(user, thunkAPI) =>{
     try {
-        const resp = await customFetch.patch('/me/update', user,{
-            headers: {
-              "Content-Type": "application/json"
-              },
-              withCredentials: true
-            });
+        const resp = await customFetch.put('/me/update', user);
         
         return resp.data;
     } catch (error) {
@@ -53,9 +38,10 @@ export const updateUser = createAsyncThunk('user/updateUser', async(user, thunkA
             thunkAPI.dispatch(logoutUser());
             return thunkAPI.rejectWithValue('Unauthorized! Logging Out...');
         }
-        return thunkAPI.rejectWithValue(error.response.data.msg);
+        return thunkAPI.rejectWithValue(error.response.data.message);
     }
 })
+
 
 export const clearStore = createAsyncThunk("/clear/store", async(message, thunkAPI) =>{
     try {
@@ -79,7 +65,7 @@ const userSlice = createSlice({
             state.user = null;
             state.isSidebarOpen=false;
             removeLocalStorageUser();
-            toast.success("payload");
+            toast.success("logging out...");
         }
     },
     extraReducers:(builder) =>{

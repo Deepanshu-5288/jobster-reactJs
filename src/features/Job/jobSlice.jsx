@@ -20,12 +20,7 @@ const initialState = {
 
 export const addJob = createAsyncThunk("/job/createJob", async (job, thunkAPI) =>{
     try {
-        const resp = await customFetch.post("/job", job,{
-            headers: {
-              "Content-Type": "application/json"
-              },
-              withCredentials: true
-            })
+        const resp = await customFetch.post("/job", job)
         thunkAPI.dispatch(clearState());
         return resp.data;
     } catch (error) {
@@ -33,37 +28,27 @@ export const addJob = createAsyncThunk("/job/createJob", async (job, thunkAPI) =
             thunkAPI.dispatch(logoutUser());
             return thunkAPI.rejectWithValue('Unauthorized! Logging Out...');
         }
-        return thunkAPI.rejectWithValue(error.response.data.msg);
+        return thunkAPI.rejectWithValue(error.response.data.message);
     }
 })
 
 export const editJob = createAsyncThunk("/job/editJob", async({jobId, job}, thunkAPI) =>{
     try {
-        const resp = await customFetch.patch(`/job/${jobId}`, job,{
-            headers: {
-              "Content-Type": "application/json"
-              },
-              withCredentials: true
-            });
+        const resp = await customFetch.put(`/job/${jobId}`, job);
         thunkAPI.dispatch(clearState());
         return resp.data;
     } catch (error) {
-        return thunkAPI.rejectWithValue(error.response.data.msg);
+        return thunkAPI.rejectWithValue(error.response.data.message);
     }
 })
 
 export const deleteJob = createAsyncThunk("/job/deleteJob", async(id, thunkAPI) =>{
     try {
-        const resp = await customFetch.delete(`/job/${id}`,{
-            headers: {
-              "Content-Type": "application/json"
-              },
-              withCredentials: true
-            });
+        const resp = await customFetch.delete(`/job/${id}`);
         thunkAPI.dispatch(getAllJobs());
         return resp.data;
     } catch (error) {
-        thunkAPI.rejectWithValue(error.response.data.msg);
+        thunkAPI.rejectWithValue(error.response.data.message);
     }
 })
 
